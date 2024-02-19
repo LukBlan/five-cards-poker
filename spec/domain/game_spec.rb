@@ -16,6 +16,11 @@ RSpec.describe 'Game' do
 
   describe "#end_round" do
     subject { Game.new([player1, broke_player]) }
-  end
 
+    it("should remove players with pot amount equal to 0") do
+      expect(subject.players_amount).to be(2)
+      subject.end_round
+      expect(subject.players_amount).to be(1)
+    end
+  end
 end

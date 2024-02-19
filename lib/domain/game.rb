@@ -1,6 +1,6 @@
 class Game
   START_ROUND_BET = 1
-  attr_reader :game_players, :pot_amount
+  attr_reader :pot_amount
 
   def initialize(players)
     @game_players = players
@@ -19,11 +19,11 @@ class Game
   end
 
   def end_round
-    # remove losers
-    # increase game turn controller based on remained players
+    @game_players = @game_players.filter { |player| player.pot_amount != 0 }
+
   end
 
-  def play_turn
-    player = @round_player
+  def players_amount
+    @game_players.length
   end
 end

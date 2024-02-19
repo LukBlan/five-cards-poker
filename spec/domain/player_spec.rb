@@ -12,12 +12,13 @@ RSpec.describe 'Player' do
     end
 
     it("should raise and exception if the amount is bigger than the player pot amount") do
-      expect {subject.make_bet(game, 11)}.to raise_exception("Player lack of pot amount")
+      expect { subject.make_bet(game, 11) }.to raise_exception("Player lack of pot amount")
     end
 
     it("should send a message to the game to increase the bet amount") do
       subject.make_bet(game, 3)
       expect(game).to have_received(:increase_pot)
     end
+
   end
 end
