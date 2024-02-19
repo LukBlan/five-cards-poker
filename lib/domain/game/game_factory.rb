@@ -1,4 +1,5 @@
 require_relative 'game'
+require_relative '../player'
 
 class GameFactory
   def create_game(players_names)
