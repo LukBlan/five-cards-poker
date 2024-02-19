@@ -3,7 +3,7 @@ require 'domain/player'
 
 RSpec.describe 'Player' do
   let(:game) { double("game", increase_pot: "") }
-  subject { Player.new("Player 1") }
+  subject { Player.new("Player 1", 10) }
 
   describe "make_bet" do
     it("should reduce players pot amount in 3") do

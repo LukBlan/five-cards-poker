@@ -3,9 +3,9 @@
 class Player
   attr_reader :pot_amount
 
-  def initialize(name)
+  def initialize(name, pot_amount)
     @name = name
-    @pot_amount = 10
+    @pot_amount = pot_amount
   end
 
   def reduce_pot(amount)

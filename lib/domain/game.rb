@@ -4,9 +4,10 @@ class Game
 
   def initialize(players)
     @game_players = players
+    @round_players = nil
     @pot_amount = 0
     @game_turn_controller = 0
-    @round_turn_controller = 0
+    @round_turn_controller = nil
   end
 
   def all_players_make_initial_bet
@@ -17,7 +18,12 @@ class Game
     @pot_amount += amount
   end
 
-  def play_turn
+  def end_round
+    # remove losers
+    # increase game turn controller based on remained players
+  end
 
+  def play_turn
+    player = @round_player
   end
 end
