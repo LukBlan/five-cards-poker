@@ -5,10 +5,19 @@ class Game
   def initialize(players)
     @game_players = players
     @pot_amount = 0
+    @game_turn_controller = 0
+    @round_turn_controller = 0
   end
 
   def all_players_make_initial_bet
-    @pot_amount += @game_players.length * START_ROUND_BET
-    @game_players.each { |player| player.reduce_pot(START_ROUND_BET) }
+    @game_players.each { |player| player.make_bet(self, START_ROUND_BET) }
+  end
+
+  def increase_pot(amount)
+    @pot_amount += amount
+  end
+
+  def play_turn
+
   end
 end
