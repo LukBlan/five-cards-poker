@@ -1,16 +1,17 @@
 class ConsoleInterface
-  def initialize
-    # Game creation
+  def initialize(game)
+    @game = game
   end
 
   def init
-    # Game loop
+    game_loop
   end
 
   def game_loop
-    # check not game over
-      # every player make bets
-      #
-      # play turn
+    until @game.game_over
+      @game.start_round
+      @game.all_players_make_initial_bet
+      # play round
+      @game.end_round
   end
 end
