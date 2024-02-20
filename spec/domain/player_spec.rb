@@ -19,6 +19,5 @@ RSpec.describe 'Player' do
       subject.make_bet(game, 3)
       expect(game).to have_received(:increase_pot)
     end
-
   end
 end
