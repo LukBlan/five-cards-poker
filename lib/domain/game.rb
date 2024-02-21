@@ -10,10 +10,21 @@ class Game
     @game_turn_controller = 0
     @round_turn_controller = nil
     @deck = deck
+    @current_max_bet = 0
   end
 
   def all_players_make_initial_bet
     @game_players.each { |player| player.make_bet(self, START_ROUND_BET) }
+  end
+
+  def new_bet(player, increase_amount)
+    if !player.all_in?(increase_amount) && @current_max_bet > player.current_bet + increase_amount
+      raise ArgumentError.new("Player bet amount is less than max")
+    end
+
+    @current_max_bet = player.current_bet + increase_amount
+    player.process_bet(increase_amount)
+    increase_pot(increase_amount)
   end
 
   def increase_pot(amount)
@@ -28,6 +39,7 @@ class Game
     @round_players = @game_players
     @round_turn_controller = @game_turn_controller
     give_cards_to_players
+    all_players_make_initial_bet
   end
 
   def current_player_turn
@@ -37,7 +49,14 @@ class Game
   def end_round
     @game_players = @game_players.filter { |player| player.pot_amount != 0 }
     @game_turn_controller = @game_turn_controller + 1 % @game_players.length
+    @deck.reset
     reset_players_hands
+  end
+
+  def play_round
+    # get current player
+    # ask player choice
+    # increase round controller
   end
 
   def give_cards_to_players

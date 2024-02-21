@@ -12,6 +12,10 @@ class Deck
     end
   end
 
+  def reset
+    @current_cards += @discard_cards
+  end
+
   def give_card(player)
     random_card_position = rand(@current_cards.length)
     card = @current_cards.delete_at(random_card_position)

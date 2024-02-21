@@ -10,8 +10,15 @@ class ConsoleInterface
   def game_loop
     until @game.game_over
       @game.start_round
-      @game.all_players_make_initial_bet
-      # play round
+      round_loop
       @game.end_round
+    end
+  end
+
+  def round_loop
+    until round_over
+      # get current player
+      # play turn
+    end
   end
 end

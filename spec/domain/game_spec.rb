@@ -4,7 +4,7 @@ require 'domain/deck'
 
 RSpec.describe 'Game' do
   let(:player1) { Player.new("Player1", 3) }
-  let(:player2) { Player.new("Player2", 1) }
+  let(:player2) { Player.new("Player2", 2) }
   let(:broke_player) { Player.new("BrokePlayer", 0)}
   let(:deck) { Deck.new([]) }
   subject { Game.new([player1, player2], deck) }
@@ -43,6 +43,13 @@ RSpec.describe 'Game' do
     it("should return on the end of a round and only one player have a pot amount > 0") do
       alternative_game.end_round
       expect(alternative_game.game_over).to be_truthy
+    end
+  end
+
+  describe "#new_bet" do
+    it("should raise an exception if the player try to bet less than the actual max bet an is not all in") do
+      subject.new_bet(player1, 3)
+      expect { subject.new_bet(player2, 1) }.to raise_exception("Player bet amount is less than max")
     end
   end
 

@@ -12,4 +12,12 @@ RSpec.describe 'Deck' do
       expect(subject.current_cards.length).to be(3)
     end
   end
+
+  describe "#reset" do
+    it("should merge discard cards in the deck") do
+      subject.give_cards_to(player, 2)
+      subject.reset
+      expect(subject.current_cards.length).to be(5)
+    end
+  end
 end
