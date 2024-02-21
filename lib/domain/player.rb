@@ -7,6 +7,10 @@ class Player
     @hand = []
   end
 
+  def receive_card(card)
+    @hand << card
+  end
+
   def reduce_pot(amount)
     @pot_amount -= amount
   end

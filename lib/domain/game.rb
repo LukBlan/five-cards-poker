@@ -1,5 +1,6 @@
 class Game
   START_ROUND_BET = 1
+  START_ROUND_CARDS = 5
   attr_reader :pot_amount
 
   def initialize(players, deck)
@@ -40,7 +41,9 @@ class Game
   end
 
   def give_cards_to_players
-
+    @game_players.each do |player|
+      @deck.give_cards_to(player, START_ROUND_CARDS)
+    end
   end
 
   def reset_players_hands

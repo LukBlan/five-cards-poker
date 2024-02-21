@@ -6,7 +6,7 @@ RSpec.describe 'Game' do
   let(:player1) { Player.new("Player1", 3) }
   let(:player2) { Player.new("Player2", 1) }
   let(:broke_player) { Player.new("BrokePlayer", 0)}
-  let(:deck) { Deck.new }
+  let(:deck) { Deck.new([]) }
   subject { Game.new([player1, player2], deck) }
 
   describe "#all_players_make_initial_bet" do
