@@ -1,11 +1,10 @@
-# frozen_string_literal: true
-
 class Player
   attr_reader :pot_amount
 
   def initialize(name, pot_amount)
     @name = name
     @pot_amount = pot_amount
+    @hand = []
   end
 
   def reduce_pot(amount)
@@ -16,6 +15,10 @@ class Player
     validate_reduced_amount(amount)
     reduce_pot(amount)
     game.increase_pot(amount)
+  end
+
+  def reset_hand
+    @hand = []
   end
 
   def validate_reduced_amount(amount)
