@@ -16,13 +16,20 @@ RSpec.describe 'Player' do
     end
   end
 
-  describe "#all_in" do
+  describe "#all_in?" do
     it "should return true if the amount is equal to the amount of player pot" do
       expect(subject.all_in?(10)).to be_truthy
     end
 
     it "should return false if the amount is less than the player pot" do
       expect(subject.all_in?(5)).to be(false)
+    end
+  end
+
+  describe "#all_in" do
+    it "should bet all of the player money" do
+      subject.all_in(game)
+      expect(subject.pot_amount).to be(0)
     end
   end
 end

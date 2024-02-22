@@ -1,3 +1,5 @@
+require_relative 'player-choices/fold'
+
 class Game
   START_ROUND_BET = 1
   START_ROUND_CARDS = 5
@@ -53,10 +55,9 @@ class Game
     reset_players_hands
   end
 
-  def play_round
-    # get current player
-    # ask player choice
-    # increase round controller
+  def play_turn
+    player = current_player_turn
+    player.play_turn(game)
   end
 
   def give_cards_to_players
@@ -71,5 +72,26 @@ class Game
 
   def players_amount
     @game_players.length
+  end
+
+  def player_choice(player)
+    player_choices = []
+    player_choices << Fold.new
+
+    if @current_max_bet > player.max_possible_bet
+      player_choices < AllIn.new
+    else
+      player_choices < Raise.new
+    end
+  end
+
+  def remove_player_from_round(player)
+    player_name = player.name
+    player_index = @round_players.find_index { |player_in_round| player_in_round.name.eql?(player_name) }
+    @round_players.delete_at(player_index)
+  end
+
+  def remaining_players_in_round
+    @round_players.length
   end
 end

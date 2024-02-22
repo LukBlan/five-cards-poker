@@ -62,4 +62,15 @@ RSpec.describe 'Game' do
       subject.end_round
     end
   end
+
+
+  describe "#remove_player_from_round" do
+    subject { Game.new([player1], deck) }
+
+    it "should remove from the current round" do
+      subject.start_round
+      subject.remove_player_from_round(player1)
+      expect(subject.remaining_players_in_round).to be(0)
+    end
+  end
 end
