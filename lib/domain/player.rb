@@ -1,15 +1,18 @@
 class Player
-  attr_reader :pot_amount, :current_bet, :name
+  attr_reader :pot_amount, :current_bet, :name, :is_checked
 
   def initialize(name, pot_amount)
     @name = name
     @pot_amount = pot_amount
     @hand = []
     @current_bet = 0
+    @is_checked = false
   end
 
   def play_turn(game)
     options = game.player_choice(player)
+    player_options = options.map { |option| option.name }.join(" ")
+    puts("Choose your options: #{player_options}")
   end
 
   def raise_bet(game)
@@ -20,6 +23,14 @@ class Player
   def get_player_input_amount
     puts("Hoy much do you want to raise bet")
     gets.chomp.to_i
+  end
+
+  def uncheck
+    @is_checked = false
+  end
+
+  def check
+    @is_checked  = true
   end
 
   def receive_card(card)

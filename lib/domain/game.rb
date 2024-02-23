@@ -7,10 +7,10 @@ class Game
 
   def initialize(players, deck)
     @game_players = players
-    @round_players = nil
+    @round_players = []
     @pot_amount = 0
     @game_turn_controller = 0
-    @round_turn_controller = nil
+    @round_turn_controller = 0
     @deck = deck
     @current_max_bet = 0
   end
@@ -20,13 +20,21 @@ class Game
   end
 
   def new_bet(player, increase_amount)
-    if !player.all_in?(increase_amount) && @current_max_bet > player.current_bet + increase_amount
+    new_bet = player.current_bet + increase_amount
+
+    if !player.all_in?(increase_amount) && @current_max_bet > new_bet
       raise ArgumentError.new("Player bet amount is less than max")
+    elsif @current_max_bet < new_bet
+      @round_players.each { |player| player.uncheck }
     end
 
-    @current_max_bet = player.current_bet + increase_amount
+    @current_max_bet = new_bet
     player.process_bet(increase_amount)
     increase_pot(increase_amount)
+  end
+
+  def round_ends
+    @round_players.all? { |player| player.is_checked }
   end
 
   def increase_pot(amount)

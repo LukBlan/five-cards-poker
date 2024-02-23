@@ -1,6 +1,7 @@
 require 'rspec'
 require 'domain/game'
 require 'domain/deck'
+require "domain/player"
 
 RSpec.describe 'Game' do
   let(:player1) { Player.new("Player1", 3) }
@@ -8,13 +9,6 @@ RSpec.describe 'Game' do
   let(:broke_player) { Player.new("BrokePlayer", 0)}
   let(:deck) { Deck.new([]) }
   subject { Game.new([player1, player2], deck) }
-
-  describe "#all_players_make_initial_bet" do
-    it "should increase de pot amount in the amount of players when a round start" do
-      subject.all_players_make_initial_bet
-      expect(subject.pot_amount).to be(2)
-    end
-  end
 
   describe "#end_round" do
     subject { Game.new([player1, broke_player, player2], deck) }
@@ -27,8 +21,15 @@ RSpec.describe 'Game' do
   end
 
   describe "#start round" do
-    it("should set players to play the round") do
+    before(:each) do
       subject.start_round
+    end
+
+    it "should increase de pot amount in the amount of players when a round start" do
+      expect(subject.pot_amount).to be(2)
+    end
+
+    it("should set players to play the round") do
       expect(subject.current_player_turn).to be(player1)
     end
   end
@@ -47,9 +48,11 @@ RSpec.describe 'Game' do
   end
 
   describe "#new_bet" do
+    let(:player3) { Player.new("Player3", 10)}
+
     it("should raise an exception if the player try to bet less than the actual max bet an is not all in") do
-      subject.new_bet(player1, 3)
-      expect { subject.new_bet(player2, 1) }.to raise_exception("Player bet amount is less than max")
+      subject.new_bet(player3, 10)
+      expect { subject.new_bet(player1, 1) }.to raise_exception("Player bet amount is less than max")
     end
   end
 
@@ -71,6 +74,23 @@ RSpec.describe 'Game' do
       subject.start_round
       subject.remove_player_from_round(player1)
       expect(subject.remaining_players_in_round).to be(0)
+    end
+  end
+
+  describe "#round_ends" do
+    before(:each) do
+      subject.start_round
+    end
+
+    it("should true when all players are checked") do
+      player1.check
+      player2.check
+      expect(subject.round_ends).to be_truthy
+    end
+
+    it("should return false when one players is not checked") do
+      player1.check
+      expect(subject.round_ends).to be(false)
     end
   end
 end
