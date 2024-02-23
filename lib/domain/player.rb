@@ -10,18 +10,24 @@ class Player
   end
 
   def play_turn(game)
-    options = game.player_choice(player)
+    options = game.player_choice(self)
     player_options = options.map { |option| option.name }.join(" ")
-    puts("Choose your options: #{player_options}")
+    display_hand
+    option = get_player_input("Choose your options: #{player_options}")
+  end
+
+  def display_hand
+    hand_as_string = @hand.join(" ")
+    puts(hand_as_string)
   end
 
   def raise_bet(game)
-    amount = get_player_input_amount
+    amount = get_player_input("Hoy much do you want to raise bet")
     make_bet(game, amount)
   end
 
-  def get_player_input_amount
-    puts("Hoy much do you want to raise bet")
+  def get_player_input(message)
+    puts(message)
     gets.chomp.to_i
   end
 
