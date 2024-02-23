@@ -1,4 +1,7 @@
 require_relative 'player-choices/fold'
+require_relative 'player-choices/raise'
+require_relative 'player-choices/all_in'
+require_relative 'player-choices/check'
 
 class Game
   START_ROUND_BET = 1
@@ -65,7 +68,7 @@ class Game
 
   def play_turn
     player = current_player_turn
-    player.play_turn(game)
+    player.play_turn(self)
   end
 
   def give_cards_to_players
@@ -87,9 +90,9 @@ class Game
     player_choices << Fold.new
 
     if @current_max_bet > player.max_possible_bet
-      player_choices < AllIn.new
+      player_choices << AllIn.new
     else
-      player_choices < Raise.new
+      player_choices << Raise.new
     end
   end
 
