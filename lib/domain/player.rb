@@ -11,9 +11,24 @@ class Player
 
   def play_turn(game)
     options = game.player_choice(self)
-    player_options = options.map { |option| option.name }.join(" ")
     display_hand
-    option = get_player_input("Choose your options: #{player_options}")
+    player_option = get_player_option(options)
+    executable_option = options.find { |option| option.name == player_option }
+    executable_option.execute(game, self)
+  end
+
+  def get_player_option(options)
+    player_options = options.map { |option| option.name }
+
+    loop do
+      option = get_player_input("Choose your options: #{player_options}")
+
+      if player_options.include?(option)
+        return option
+      end
+
+      puts("Invalid option try again")
+    end
   end
 
   def display_hand
@@ -22,13 +37,13 @@ class Player
   end
 
   def raise_bet(game)
-    amount = get_player_input("Hoy much do you want to raise bet")
+    amount = get_player_input("Hoy much do you want to raise bet").to_i
     make_bet(game, amount)
   end
 
   def get_player_input(message)
     puts(message)
-    gets.chomp.to_i
+    gets.chomp
   end
 
   def uncheck

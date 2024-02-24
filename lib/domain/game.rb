@@ -37,7 +37,7 @@ class Game
   end
 
   def round_ends
-    @round_players.all? { |player| player.is_checked }
+    @round_players.all? { |player| player.is_checked } || remaining_players_in_round == 1
   end
 
   def increase_pot(amount)
