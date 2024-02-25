@@ -1,5 +1,5 @@
 class Card
-  attr_reader :type
+  attr_reader :type, :value
 
   def initialize(value, type)
     @value = value
