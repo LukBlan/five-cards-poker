@@ -21,6 +21,7 @@ class ConsoleInterface
       player = @game.current_player_turn
       puts("#{player.name} turn")
       @game.play_turn
+      @game.increase_round_controller
     end
   end
 end

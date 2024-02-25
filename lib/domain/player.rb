@@ -12,6 +12,8 @@ class Player
   def play_turn(game)
     options = game.player_choice(self)
     display_hand
+    puts("Money: #{@pot_amount}")
+    puts("Round bet accumulated: #{game.pot_amount}")
     player_option = get_player_option(options)
     executable_option = options.find { |option| option.name == player_option }
     executable_option.execute(game, self)
@@ -32,8 +34,8 @@ class Player
   end
 
   def display_hand
-    hand_as_string = @hand.join(" ")
-    puts(hand_as_string)
+    @hand.each { |card| print("#{card.to_s} ") }
+    puts
   end
 
   def raise_bet(game)

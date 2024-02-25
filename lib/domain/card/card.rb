@@ -3,4 +3,8 @@ class Card
     @value = value
     @type = type
   end
+
+  def to_s
+    "|#{@value} #{@type}|"
+  end
 end

@@ -61,7 +61,7 @@ class Game
 
   def end_round
     @game_players = @game_players.filter { |player| player.pot_amount != 0 }
-    @game_turn_controller = @game_turn_controller + 1 % @game_players.length
+    @game_turn_controller = (@game_turn_controller + 1) % @game_players.length
     @deck.reset
     reset_players_hands
   end
@@ -104,5 +104,9 @@ class Game
 
   def remaining_players_in_round
     @round_players.length
+  end
+
+  def increase_round_controller
+    @round_turn_controller = (@round_turn_controller + 1) % @round_players.length
   end
 end
