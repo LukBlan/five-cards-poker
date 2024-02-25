@@ -10,13 +10,20 @@ class Player
   end
 
   def play_turn(game)
+    display_current_round_state(game)
     options = game.player_choice(self)
-    display_hand
-    puts("Money: #{@pot_amount}")
-    puts("Round bet accumulated: #{game.pot_amount}")
     player_option = get_player_option(options)
     executable_option = options.find { |option| option.name == player_option }
     executable_option.execute(game, self)
+  end
+
+  def display_current_round_state(game)
+    system("clear")
+    puts("#{@name} turn")
+    display_hand
+    puts("Player Money: #{@pot_amount}")
+    puts("Round Money accumulated: #{game.pot_amount}")
+    puts("Current max bet: #{game.current_max_bet}")
   end
 
   def call(game)
@@ -87,9 +94,10 @@ class Player
     @current_bet += amount
   end
 
-  def reset_hand
+  def reset
     @hand = []
     @current_bet = 0
+    uncheck
   end
 
   def max_possible_bet

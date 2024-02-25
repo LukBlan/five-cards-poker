@@ -17,9 +17,6 @@ class ConsoleInterface
 
   def round_loop
     until @game.round_ends
-      system("clear")
-      player = @game.current_player_turn
-      puts("#{player.name} turn")
       @game.play_turn
       @game.increase_round_controller
     end

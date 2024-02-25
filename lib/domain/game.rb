@@ -61,10 +61,29 @@ class Game
   end
 
   def end_round
-    @game_players = @game_players.filter { |player| player.pot_amount != 0 }
+    process_winner
+    remove_losers
     @game_turn_controller = (@game_turn_controller + 1) % @game_players.length
     @deck.reset
-    reset_players_hands
+    reset_players
+  end
+
+  def process_winner
+    winner = get_winner
+    winner.increase_pot(@pot_amount)
+  end
+
+  def remove_losers
+    @game_players = @game_players.filter { |player| player.pot_amount != 0 }
+  end
+
+  def get_winner
+    if @round_players.length == 1
+      @round_players[0]
+    end
+
+    # TODO Add winner by hand
+     @round_players[0]
   end
 
   def play_turn
@@ -78,8 +97,8 @@ class Game
     end
   end
 
-  def reset_players_hands
-    @game_players.each { |player| player.reset_hand }
+  def reset_players
+    @game_players.each { |player| player.reset }
   end
 
   def players_amount

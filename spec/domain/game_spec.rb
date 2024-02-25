@@ -10,12 +10,11 @@ RSpec.describe 'Game' do
   let(:deck) { Deck.new([]) }
   subject { Game.new([player1, player2], deck) }
 
-  describe "#end_round" do
+  describe "#remove_losers" do
     subject { Game.new([player1, broke_player, player2], deck) }
 
     it("should remove players with pot amount equal to 0") do
-      expect(subject.players_amount).to be(3)
-      subject.end_round
+      subject.remove_losers
       expect(subject.players_amount).to be(2)
     end
   end
@@ -41,8 +40,8 @@ RSpec.describe 'Game' do
       expect(subject.game_over).to be_falsy
     end
 
-    it("should return on the end of a round and only one player have a pot amount > 0") do
-      alternative_game.end_round
+    it("should return true if only one player remain in game") do
+      alternative_game.remove_losers
       expect(alternative_game.game_over).to be_truthy
     end
   end
@@ -55,17 +54,6 @@ RSpec.describe 'Game' do
       expect { subject.new_bet(player1, 1) }.to raise_exception("Player bet amount is less than max")
     end
   end
-
-  describe "#reset_players_hand" do
-    let(:mock_player1) { double("player1", :reset_hand => "", :pot_amount => 3) }
-    subject { Game.new([mock_player1], deck) }
-
-    it("should send a message to all players to reset hands") do
-      expect(mock_player1).to receive(:reset_hand)
-      subject.end_round
-    end
-  end
-
 
   describe "#remove_player_from_round" do
     subject { Game.new([player1], deck) }
