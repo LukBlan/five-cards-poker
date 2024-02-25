@@ -2,11 +2,12 @@ require_relative 'player-choices/fold'
 require_relative 'player-choices/raise'
 require_relative 'player-choices/all_in'
 require_relative 'player-choices/check'
+require_relative 'player-choices/call'
 
 class Game
   START_ROUND_BET = 1
   START_ROUND_CARDS = 5
-  attr_reader :pot_amount
+  attr_reader :pot_amount, :current_max_bet
 
   def initialize(players, deck)
     @game_players = players
@@ -91,9 +92,13 @@ class Game
 
     if @current_max_bet > player.max_possible_bet
       player_choices << AllIn.new
+    elsif player.current_bet < @current_max_bet
+      player_choices << Raise.new
+      player_choices << Call.new
     else
       player_choices << Raise.new
     end
+
   end
 
   def remove_player_from_round(player)

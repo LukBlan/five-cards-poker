@@ -19,6 +19,11 @@ class Player
     executable_option.execute(game, self)
   end
 
+  def call(game)
+    bet_amount_difference = game.current_max_bet - @current_bet
+    make_bet(game, bet_amount_difference)
+  end
+
   def get_player_option(options)
     player_options = options.map { |option| option.name }
 
