@@ -1,11 +1,13 @@
 require 'rspec'
 require 'domain/player'
+require 'domain/hand_calculator'
 
 RSpec.describe 'Player' do
+  let(:hand_calculator) { HandCalculator.new([])}
   subject { Player.new("Player 1", 10) }
-  let(:game) { Game.new([subject], Deck.new([])) }
+  let(:game) { Game.new([subject], Deck.new([], hand_calculator)) }
 
-  describe "make_bet" do
+  describe "#make_bet" do
     it("should reduce players pot amount in 3") do
       subject.make_bet(game, 3)
       expect(subject.pot_amount).to be(7)

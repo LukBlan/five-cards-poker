@@ -1,5 +1,5 @@
 class Player
-  attr_reader :pot_amount, :current_bet, :name, :is_checked
+  attr_reader :pot_amount, :current_bet, :name, :is_checked, :hand
 
   def initialize(name, pot_amount)
     @name = name
@@ -19,7 +19,8 @@ class Player
 
   def display_current_round_state(game)
     system("clear")
-    puts("#{@name} turn")
+    puts("         Round #{game.round_number}")
+    puts("         #{@name} turn")
     display_hand
     puts("Player Money: #{@pot_amount}")
     puts("Round Money accumulated: #{game.pot_amount}")
@@ -87,6 +88,10 @@ class Player
 
   def reduce_pot(amount)
     @pot_amount -= amount
+  end
+
+  def increase_pot(amount)
+    @pot_amount += amount
   end
 
   def process_bet(amount)

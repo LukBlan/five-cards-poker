@@ -1,9 +1,10 @@
 class Deck
   attr_reader :current_cards
 
-  def initialize(cards)
+  def initialize(cards, hand_calculator)
     @current_cards = cards
     @discard_cards = []
+    @hand_calculator = hand_calculator
   end
 
   def give_cards_to(player, amount)
@@ -22,5 +23,9 @@ class Deck
 
     @discard_cards << card
     player.receive_card(card)
+  end
+
+  def hand_score(hand)
+    @hand_calculator.compute_value(hand)
   end
 end

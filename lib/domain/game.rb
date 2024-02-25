@@ -7,7 +7,7 @@ require_relative 'player-choices/call'
 class Game
   START_ROUND_BET = 1
   START_ROUND_CARDS = 5
-  attr_reader :pot_amount, :current_max_bet
+  attr_reader :pot_amount, :current_max_bet, :round_number
 
   def initialize(players, deck)
     @game_players = players
@@ -17,6 +17,7 @@ class Game
     @round_turn_controller = 0
     @deck = deck
     @current_max_bet = 0
+    @round_number = 1
   end
 
   def all_players_make_initial_bet
@@ -61,15 +62,22 @@ class Game
   end
 
   def end_round
-    process_winner
+    process_round_winner
     remove_losers
     @game_turn_controller = (@game_turn_controller + 1) % @game_players.length
     @deck.reset
+    @round_number += 1
+    reset_game
     reset_players
   end
 
-  def process_winner
-    winner = get_winner
+  def reset_game
+    @pot_amount = 0
+    @current_max_bet = 0
+  end
+
+  def process_round_winner
+    winner = get_round_winner
     winner.increase_pot(@pot_amount)
   end
 
@@ -77,13 +85,16 @@ class Game
     @game_players = @game_players.filter { |player| player.pot_amount != 0 }
   end
 
-  def get_winner
+  def get_round_winner
     if @round_players.length == 1
-      @round_players[0]
+      return @round_players[0]
     end
 
     # TODO Add winner by hand
-     @round_players[0]
+    @round_players.max_by do |player|
+      hand = player.hand
+      @deck.hand_score(hand)
+    end
   end
 
   def play_turn
@@ -116,6 +127,7 @@ class Game
       player_choices << Call.new
     else
       player_choices << Raise.new
+      player_choices << Check.new
     end
 
   end

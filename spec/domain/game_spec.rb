@@ -7,7 +7,8 @@ RSpec.describe 'Game' do
   let(:player1) { Player.new("Player1", 3) }
   let(:player2) { Player.new("Player2", 2) }
   let(:broke_player) { Player.new("BrokePlayer", 0)}
-  let(:deck) { Deck.new([]) }
+  let(:hand_calculator) { HandCalculator.new([])}
+  let(:deck) { Deck.new([], hand_calculator) }
   subject { Game.new([player1, player2], deck) }
 
   describe "#remove_losers" do
