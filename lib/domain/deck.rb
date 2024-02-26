@@ -29,4 +29,9 @@ class Deck
     result = @hand_calculator.process_hand(hand)
     @hand_calculator.compute_hand_value(result)
   end
+
+  def high_card_value(hand)
+    result = @hand_calculator.process_hand(hand)
+    @hand_calculator.high_card_value(result)
+  end
 end

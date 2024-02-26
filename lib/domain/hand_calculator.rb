@@ -30,6 +30,11 @@ class HandCalculator
     result
   end
 
+  def high_card_value(result)
+    high_card = result[:high_card]
+    @card_from_high_to_lover_value.index(high_card)
+  end
+
   def compute_hand_value(hand_result)
     hand = hand_result[:hand]
     HAND_PRIORITY[hand]

@@ -86,15 +86,20 @@ class Game
   end
 
   def get_round_winner
-    if @round_players.length == 1
-      return @round_players[0]
-    end
+    return @round_players[0] if @round_players.length == 1
+    winner = get_winner_by_hand_value
+  end
 
-    # TODO Add winner by hand
-    @round_players.min_by do |player|
+  def get_winner_by_hand_value
+    player_with_best_hand_value = @round_players.min_by do |player|
       hand = player.hand
       @deck.hand_score(hand)
     end
+
+    best_hand_value = @deck.hand_score(player_with_best_hand_value.hand)
+    all_players_with_best_hand = @round_players.filter { |player| @deck.hand_score(player.hand) == best_hand_value }
+    return player_with_best_hand_value if all_players_with_best_hand.length == 1
+    all_players_with_best_hand.min_by { |player| @deck.high_card_value(player.hand) }
   end
 
   def play_turn
