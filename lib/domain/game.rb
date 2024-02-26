@@ -91,7 +91,7 @@ class Game
     end
 
     # TODO Add winner by hand
-    @round_players.max_by do |player|
+    @round_players.min_by do |player|
       hand = player.hand
       @deck.hand_score(hand)
     end

@@ -26,6 +26,7 @@ class Deck
   end
 
   def hand_score(hand)
-    @hand_calculator.compute_value(hand)
+    result = @hand_calculator.process_hand(hand)
+    @hand_calculator.compute_hand_value(result)
   end
 end
