@@ -1,5 +1,5 @@
 class Player
-  attr_reader :pot_amount, :current_bet, :name, :is_checked, :hand
+  attr_reader :pot_amount, :current_bet, :name, :is_checked, :hand, :change_card_available
 
   def initialize(name, pot_amount)
     @name = name
@@ -7,6 +7,7 @@ class Player
     @hand = []
     @current_bet = 0
     @is_checked = false
+    @change_card_available = true
   end
 
   def play_turn(game)
@@ -15,6 +16,34 @@ class Player
     player_option = get_player_option(options)
     executable_option = options.find { |option| option.name == player_option }
     executable_option.execute(game, self)
+  end
+
+  def change_cards(game)
+    list_cards_index = get_player_card_list
+    list_of_cards = list_cards_index.map { |index| @hand[index.to_i - 1] }
+    @hand = @hand.filter { |card| !list_of_cards.include?(card) }
+    @change_card_available = false
+    game.give_cards_to_player(self, list_of_cards.length)
+  end
+
+  def get_player_card_list
+    loop do
+      user_input = get_player_input("List card index separated by coma (e.g 1,3,4)")
+
+      begin
+        coma_separated_input = user_input.split(",")
+        check_user_input(coma_separated_input)
+        return coma_separated_input.map(&:to_i)
+      rescue
+        puts("Invalid Input, try again")
+      end
+    end
+  end
+
+  def check_user_input(coma_separated_input)
+    if coma_separated_input.any? { |input| input.to_i < 1 || input.to_i > @hand.length }
+      raise ArgumentError.new("Input is not between hand range (1 to 5)")
+    end
   end
 
   def display_current_round_state(game)
@@ -102,6 +131,7 @@ class Player
   def reset
     @hand = []
     @current_bet = 0
+    @change_card_available = true
     uncheck
   end
 

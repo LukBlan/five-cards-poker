@@ -3,6 +3,7 @@ require_relative 'player-choices/raise'
 require_relative 'player-choices/all_in'
 require_relative 'player-choices/check'
 require_relative 'player-choices/call'
+require_relative 'player-choices/change_cards'
 
 class Game
   START_ROUND_BET = 1
@@ -53,7 +54,7 @@ class Game
   def start_round
     @round_players = @game_players
     @round_turn_controller = @game_turn_controller
-    give_cards_to_players
+    @round_players.each { |player| give_cards_to_player(player, START_ROUND_CARDS) }
     all_players_make_initial_bet
   end
 
@@ -87,7 +88,7 @@ class Game
 
   def get_round_winner
     return @round_players[0] if @round_players.length == 1
-    winner = get_winner_by_hand_value
+    get_winner_by_hand_value
   end
 
   def get_winner_by_hand_value
@@ -107,12 +108,6 @@ class Game
     player.play_turn(self)
   end
 
-  def give_cards_to_players
-    @game_players.each do |player|
-      @deck.give_cards_to(player, START_ROUND_CARDS)
-    end
-  end
-
   def reset_players
     @game_players.each { |player| player.reset }
   end
@@ -125,6 +120,10 @@ class Game
     player_choices = []
     player_choices << Fold.new
 
+    if player.change_card_available
+      player_choices << ChangeCards.new
+    end
+
     if @current_max_bet > player.max_possible_bet
       player_choices << AllIn.new
     elsif player.current_bet < @current_max_bet
@@ -134,13 +133,16 @@ class Game
       player_choices << Raise.new
       player_choices << Check.new
     end
-
   end
 
   def remove_player_from_round(player)
     player_name = player.name
     player_index = @round_players.find_index { |player_in_round| player_in_round.name.eql?(player_name) }
     @round_players.delete_at(player_index)
+  end
+
+  def give_cards_to_player(player, amount)
+    @deck.give_cards_to(player, amount)
   end
 
   def remaining_players_in_round
